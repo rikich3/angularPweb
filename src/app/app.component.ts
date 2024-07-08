@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { HelloWorldComponent } from './hello-world/hello-world.component';
+import { DataService } from './Services/data.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, HelloWorldComponent, UserComponent],
+  imports: [RouterOutlet, CommonModule, HelloWorldComponent, UserComponent, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -20,6 +22,7 @@ export class AppComponent {
   webpage: string;
   hobbies: string[];
   showHobbies: boolean;
+  dataService: DataService = inject(DataService);
 
   constructor(){
     console.log('Contructor woekiing...');
@@ -27,7 +30,11 @@ export class AppComponent {
     this.webpage = "frennow.com";
     this.hobbies = ['Videogames', 'Read', 'code'];
     this.showHobbies = false;
+    this.dataService.getData().subscribe(data => {
+      console.log(data);
+    });
   }
+
   toggleHobbies(){
     this.showHobbies = !this.showHobbies;
   }
@@ -52,5 +59,6 @@ export class AppComponent {
   sayHello(){
     alert('Hello ' + this.name);
   }
+
 }
 
